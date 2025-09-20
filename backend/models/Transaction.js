@@ -1,4 +1,4 @@
-const {DataTypes} = require("sequelize");
+const {DataTypes, Sequelize} = require("sequelize");
 const sequelize = require("../config/db");
 
 const Transaction = sequelize.define("Transaction", {
@@ -14,7 +14,7 @@ const Transaction = sequelize.define("Transaction", {
     Transaction_time: {
         type: DataTypes.DATE, 
         allowNull: false, 
-        defaultValue: DataTypes.NOW
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Total_amount: {
         type: DataTypes.FLOAT,
