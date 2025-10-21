@@ -49,8 +49,8 @@ const loginUser = asyncHandler(async(req, res) => {
         res.status(401);
         throw new Error("User not found!");
     }
-    const isMatch = await bcrypt.compare(password, findUser.password);
-    if (!isMatch) {
+    //const isMatch = await bcrypt.compare(password, findUser.password);
+    if (req.body.password !== findUser.password) {
         res.status(401);
         throw new Error("Invalid credentials!");
     }
