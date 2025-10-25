@@ -17,9 +17,14 @@ const Transaction = sequelize.define("Transaction", {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     Total_amount: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false, 
-        min: 0.00
+        validate: {
+            min: {
+                args: [0],
+                msg: "Total amount cannot be negative"
+            }
+        }
     }, 
     Status: {
         type: DataTypes.ENUM("Pending", "Completed", "Failed", "Cancelled"),
