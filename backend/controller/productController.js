@@ -59,6 +59,11 @@ const updateProduct = asyncHandler(async (req, res) => {
         throw new Error("Product not found");
     }
 
+    if (product.Administer_ID !== req.user.id) {
+        res.status(403);
+        throw new Error("Not authorized to update this product");
+    }
+
     const { Product_name, Price, Discount, Stock, Image_URL, Description } = req.body;
 
     product.Product_name = Product_name ?? product.Product_name;
@@ -81,10 +86,16 @@ const updateProduct = asyncHandler(async (req, res) => {
 //@access Admin only
 const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findByPk(req.params.id);
-
+    
     if (!product) {
         res.status(404);
         throw new Error("Product not found!");
+    }
+    
+    // Ownership check
+    if (product.Administer_ID !== req.user.id) {
+        res.status(403);
+        throw new Error("Not authorized to delete this product");
     }
 
     await product.destroy();
@@ -92,4 +103,13 @@ const deleteProduct = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Product deleted successfully" });
 });
 
-module.exports = {getAllProducts, getProductById, addProduct, updateProduct, deleteProduct};
+//@desc Admin: View own products
+//@route GET /api/products/admin
+//@access Admin Only
+const getProductsByAdmin = asyncHandler(async (req, res) => {
+    const adminId = req.user.id;
+    const products = await Product.findAll({ where: { Administer_ID: adminId } });
+    res.status(200).json(products);
+});
+
+module.exports = {getAllProducts, getProductById, addProduct, updateProduct, deleteProduct, getProductsByAdmin};
