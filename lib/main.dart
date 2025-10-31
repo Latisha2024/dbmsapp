@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:products/pages/admin_products_page.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/catalog_page.dart';
 import 'pages/cart_page.dart';
-import 'pages/product_detail_page.dart';
+//import 'pages/product_detail_page.dart';
 import 'pages/order_history_page.dart';
-import 'pages/role_selection_page.dart';
-import 'pages/settings_page.dart';
+//import 'pages/settings_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,10 +29,9 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const SignUpPage(),
         '/catalog': (context) => const CatalogPage(),
         '/cart': (context) => const CartPage(),
-        '/productDetail': (context) => const ProductDetailPage(),
+        // '/productDetail': (context) => const ProductDetailPage(productId: productId),
         '/orderHistory': (context) => const OrderHistoryPage(),
-        '/roleSelection': (context) => const RoleSelectionPage(),
-        '/settings': (context) => const SettingsPage(),
+       // '/settings': (context) => const SettingsPage(),
       },
     );
   }

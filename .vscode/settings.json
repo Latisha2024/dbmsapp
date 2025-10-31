@@ -14,5 +14,6 @@
             "database": "flutter_login",
             "username": "root"
         }
-    ]
+    ],
+    "cmake.sourceDirectory": "E:/DBMSPRO/products/linux"
 }

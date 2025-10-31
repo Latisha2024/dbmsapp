@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+class ProductDetailPage extends StatelessWidget {
+  const ProductDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Account")),
-      body: ListView(
-        children: [
-          ListTile(
-              leading: const Icon(Icons.shopping_bag),
-              title: const Text("My Orders"),
-              onTap: () => Navigator.pushNamed(context, '/orderHistory')),
-          const ListTile(leading: Icon(Icons.person), title: Text("My Details")),
-          const ListTile(
-              leading: Icon(Icons.location_on), title: Text("Address Book")),
-          const ListTile(
-              leading: Icon(Icons.payment), title: Text("Payment Methods")),
-          const ListTile(
-              leading: Icon(Icons.notifications), title: Text("Notifications")),
-          const ListTile(leading: Icon(Icons.help), title: Text("Help Center")),
-          ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text("Logout"),
-              onTap: () => Navigator.pushNamedAndRemoveUntil(
-                  context, '/', (route) => false)),
-        ],
+      appBar: AppBar(title: const Text("Details")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Image.network(
+                "https://m.media-amazon.com/images/I/71y6XkUHpZL._SL1500_.jpg",
+                height: 200),
+            const SizedBox(height: 10),
+            const Text("Apple Watch Series 4",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text("\$1190"),
+            const SizedBox(height: 20),
+            const Text(
+                "The Apple Watch Series 4 boasts a larger display with thinner bezels..."),
+            const Spacer(),
+            ElevatedButton(
+                onPressed: () => Navigator.pushNamed(context, '/cart'),
+                child: const Text("Add to Cart")),
+          ],
+        ),
       ),
     );
   }

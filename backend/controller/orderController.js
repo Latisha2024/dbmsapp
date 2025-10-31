@@ -4,6 +4,7 @@ const { Order, OrderItem, Cart, Product, Transaction, User } = require("../model
 //@desc Place a new order (convert cart to order)
 //@route POST /api/orders/:userId
 //@access User Only
+
 const placeOrder = asyncHandler(async (req, res) => {
     const { userId } = req.params;
 
@@ -68,6 +69,8 @@ const placeOrder = asyncHandler(async (req, res) => {
 //@desc Get all orders for a user
 //@route GET /api/orders/:userId
 //@access User Only
+
+
 const getOrdersByUser = asyncHandler(async (req, res) => {
     const { userId } = req.params;
 
@@ -83,6 +86,7 @@ const getOrdersByUser = asyncHandler(async (req, res) => {
 
     res.status(200).json(orders);
 });
+
 
 //@desc Cancel an order
 //@route DELETE /api/orders/:userId/:orderId
@@ -177,7 +181,6 @@ const updateOrderStatus = asyncHandler(async (req, res) => {
         transaction: order.Transaction || null
     });
 });
-
 //@desc Admin: Get all orders that include this admin's products
 //@route GET /api/admin/orders
 //@access Admin Only

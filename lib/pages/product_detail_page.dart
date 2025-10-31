@@ -1,30 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({super.key});
+class ProductDetailPage extends StatefulWidget {
+  final int productId;
+  const ProductDetailPage({super.key, required this.productId});
+
+  @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  final Dio _dio = Dio(BaseOptions(baseUrl: "http://localhost:5000/api/products"));
+  Map? product;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchProduct();
+  }
+
+  Future<void> _fetchProduct() async {
+    try {
+      final response = await _dio.get("/${widget.productId}");
+      setState(() {
+        product = response.data;
+        loading = false;
+      });
+    } catch (e) {
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (loading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (product == null) {
+      return const Scaffold(body: Center(child: Text("Product not found")));
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Details")),
+      appBar: AppBar(
+        title: Text(product!['Product_name'], style: GoogleFonts.poppins()),
+        backgroundColor: const Color(0xFF004AAD),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-                "https://m.media-amazon.com/images/I/71y6XkUHpZL._SL1500_.jpg",
-                height: 200),
+            Text(product!['Product_name'],
+                style: GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600)),
             const SizedBox(height: 10),
-            const Text("Apple Watch Series 4",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const Text("\$1190"),
+            Text("Price: ₹${product!['Price']}", style: GoogleFonts.poppins(fontSize: 18)),
+            const SizedBox(height: 10),
+            Text("Discount: ${product!['Discount']}%", style: GoogleFonts.poppins()),
+            const SizedBox(height: 10),
+            Text("Stock: ${product!['Stock']}", style: GoogleFonts.poppins()),
             const SizedBox(height: 20),
-            const Text(
-                "The Apple Watch Series 4 boasts a larger display with thinner bezels..."),
-            const Spacer(),
-            ElevatedButton(
-                onPressed: () => Navigator.pushNamed(context, '/cart'),
-                child: const Text("Add to Cart")),
+            Text(product!['Description'] ?? "No description",
+                style: GoogleFonts.poppins(color: Colors.grey[700])),
           ],
         ),
       ),
