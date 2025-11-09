@@ -16,11 +16,15 @@ const Product = sequelize.define("Product", {
     }
   },
   Product_name: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(150),
     allowNull: false,
     validate: {
       notNull: { msg: "Product name is required" },
-      notEmpty: { msg: "Product name cannot be empty" }
+      notEmpty: { msg: "Product name cannot be empty" },
+      is: {
+        args: /^[A-Za-z0-9\s]+$/,
+        msg: "Product name must contain only letters, numbers, and spaces"
+      }
     }
   },
   Price: {
@@ -28,10 +32,8 @@ const Product = sequelize.define("Product", {
     allowNull: false,
     validate: {
       notNull: { msg: "Price is required" },
-      min: {
-        args: [0],
-        msg: "Price cannot be negative"
-      }
+      min: { args: [0], msg: "Price cannot be negative" },
+      isDecimal: { msg: "Price must be a valid decimal number" }
     }
   },
   Discount: {
@@ -39,14 +41,9 @@ const Product = sequelize.define("Product", {
     allowNull: false,
     defaultValue: 0.00,
     validate: {
-      min: {
-        args: [0],
-        msg: "Discount cannot be negative"
-      },
-      max: {
-        args: [100],
-        msg: "Discount cannot exceed 100%"
-      }
+      min: { args: [0], msg: "Discount cannot be negative" },
+      max: { args: [100], msg: "Discount cannot exceed 100%" },
+      isDecimal: { msg: "Discount must be a valid decimal number" }
     }
   },
   Stock: {
@@ -54,24 +51,23 @@ const Product = sequelize.define("Product", {
     allowNull: false,
     defaultValue: 0,
     validate: {
-      min: {
-        args: [0],
-        msg: "Stock cannot be negative"
-      }
+      min: { args: [0], msg: "Stock cannot be negative" },
+      isInt: { msg: "Stock must be an integer" }
     }
   },
   Image_URL: {
     type: DataTypes.STRING,
     allowNull: true,
     validate: {
-      isUrl: {
-        msg: "Image URL must be a valid URL"
-      }
+      isUrl: { msg: "Image URL must be a valid URL" }
     }
   },
   Description: {
-    type: DataTypes.STRING,
-    allowNull: true
+    type: DataTypes.STRING(500),
+    allowNull: true,
+    validate: {
+      len: { args: [0, 500], msg: "Description cannot exceed 500 characters" }
+    }
   }
 }, {
   tableName: "Product_details",

@@ -12,7 +12,8 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     validate: {
       notNull: { msg: "Transaction_ID is required" },
-      isInt: { msg: "Transaction_ID must be an integer" }
+      isInt: { msg: "Transaction_ID must be an integer" },
+      min: { args: [1], msg: "Transaction_ID must be positive" }
     }
   },
   User_ID: {
@@ -20,7 +21,8 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     validate: {
       notNull: { msg: "User_ID is required" },
-      isInt: { msg: "User_ID must be an integer" }
+      isInt: { msg: "User_ID must be an integer" },
+      min: { args: [1], msg: "User_ID must be positive" }
     }
   },
   TotalAmount: {
@@ -28,15 +30,17 @@ const Order = sequelize.define("Order", {
     allowNull: false,
     defaultValue: 0.00,
     validate: {
-      min: {
-        args: [0],
-        msg: "TotalAmount cannot be negative"
-      }
+      min: { args: [0], msg: "TotalAmount cannot be negative" },
+      isDecimal: { msg: "TotalAmount must be a valid decimal number" }
     }
   },
   Status: {
-    type: DataTypes.STRING,
-    defaultValue: "Pending"
+    type: DataTypes.ENUM("Pending", "Shipped", "Delivered", "Cancelled"),
+    allowNull: false,
+    defaultValue: "Pending",
+    validate: {
+      notEmpty: { msg: "Status cannot be empty" }
+    }
   }
 }, {
   tableName: "Orders",

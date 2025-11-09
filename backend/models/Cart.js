@@ -12,7 +12,8 @@ const Cart = sequelize.define("Cart", {
     allowNull: false,
     validate: {
       notNull: { msg: "User_ID is required" },
-      isInt: { msg: "User_ID must be an integer" }
+      isInt: { msg: "User_ID must be an integer" },
+      min: { args: [1], msg: "User_ID must be positive" }
     }
   },
   Product_ID: {
@@ -20,7 +21,8 @@ const Cart = sequelize.define("Cart", {
     allowNull: false,
     validate: {
       notNull: { msg: "Product_ID is required" },
-      isInt: { msg: "Product_ID must be an integer" }
+      isInt: { msg: "Product_ID must be an integer" },
+      min: { args: [1], msg: "Product_ID must be positive" }
     }
   },
   Quantity: {
@@ -28,10 +30,9 @@ const Cart = sequelize.define("Cart", {
     allowNull: false,
     defaultValue: 1,
     validate: {
-      min: {
-        args: [1],
-        msg: "Quantity must be at least 1"
-      }
+      min: { args: [1], msg: "Quantity must be at least 1" },
+      isInt: { msg: "Quantity must be an integer" },
+      max: { args: [100], msg: "Quantity cannot exceed 100 per product" }
     }
   }
 }, {

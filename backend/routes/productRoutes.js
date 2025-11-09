@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const upload = require('../middleware/upload');
 
 const { getAllProducts, getProductById, addProduct, updateProduct, deleteProduct, getProductsByAdmin } = require("../controller/productController");
 
@@ -11,8 +12,8 @@ router.get("/", getAllProducts);
 router.get("/:id", getProductById);
 
 // Admin-only routes
-router.post("/add", protect, authorize("admin"), addProduct);
-router.put("/update/:id", protect, authorize("admin"), updateProduct);
+router.post("/add", protect, authorize("admin"), upload.single("image"), addProduct);
+router.put("/update/:id", protect, authorize("admin"), upload.single("image"), updateProduct);
 router.get("/admin", protect, authorize("admin"), getProductsByAdmin);
 router.delete("/:id", protect, authorize("admin"), deleteProduct);
 

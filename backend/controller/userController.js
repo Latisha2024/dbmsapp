@@ -20,7 +20,7 @@ const registerUser = asyncHandler(async (req, res) => {
     if (role === "user") {
         if (!address) {
             res.status(400);
-            throw new Error("Address is required for users!");
+            throw new Error("Address is required!");
         }
 
         const existing = await User.findOne({ where: { mail_ID: email } });
